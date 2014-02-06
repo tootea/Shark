@@ -235,21 +235,36 @@ if (APPLE)
 else()
 	option(ENABLE_ATLAS "Use ATLAS as Linear Algebra Library" ON)
 	option(ATLAS_FULL_LAPACK "Signalizes whether ATLAS comes with the full LAPACK package" OFF)
+	option(ATLAS_MT "Use multithreaded ATLAS" OFF)
 
 	if(ENABLE_ATLAS)
-		find_library(CBLAS_LIBRARY cblas
-			HINTS ${ATLAS_ROOT}/lib /opt/local/lib /usr/lib64/atlas/
-		)
+		if(ATLAS_MT)
+			set(ATLAS_LIBRARY_NAME tatlas)
+			set(CBLAS_LIBRARY_NAME ptcblas)
+		else(ATLAS_MT)
+			set(ATLAS_LIBRARY_NAME satlas)
+			set(CBLAS_LIBRARY_NAME cblas)
+		endif(ATLAS_MT)
 
-		find_library(CLAPACK_LIBRARY lapack
+		find_library(ATLAS_LIBRARY ${ATLAS_LIBRARY_NAME}
 			HINTS ${ATLAS_ROOT}/lib /opt/local/lib /usr/lib64/atlas/
-		)
+	        )
 
-		find_library(ATLAS_LIBRARY atlas
-			HINTS ${ATLAS_ROOT}/lib /opt/local/lib /usr/lib64/atlas/
-		)
+	        if(NOT ATLAS_LIBRARY)
+			find_library(CBLAS_LIBRARY ${CBLAS_LIBRARY_NAME}
+				HINTS ${ATLAS_ROOT}/lib /opt/local/lib /usr/lib64/atlas/
+			)
 
-		get_filename_component(ATLAS_PATH ${CBLAS_LIBRARY} PATH )
+			find_library(CLAPACK_LIBRARY lapack
+				HINTS ${ATLAS_ROOT}/lib /opt/local/lib /usr/lib64/atlas/
+			)
+
+			find_library(ATLAS_LIBRARY atlas
+				HINTS ${ATLAS_ROOT}/lib /opt/local/lib /usr/lib64/atlas/
+			)
+		endif(NOT ATLAS_LIBRARY)
+
+		get_filename_component(ATLAS_PATH ${ATLAS_LIBRARY} PATH )
 		set(ATLAS_PATH ${ATLAS_PATH}/..)
 		mark_as_advanced(
 			CBLAS_LIBRARY
@@ -257,9 +272,14 @@ else()
 			ATLAS_LIBRARY
 		)
 
-		if(CBLAS_LIBRARY)
-			message(STATUS "ATLAS found.")
-			list(APPEND LINK_LIBRARIES ${CLAPACK_LIBRARY} ${CBLAS_LIBRARY} ${ATLAS_LIBRARY})
+		if(ATLAS_LIBRARY)
+			if(CBLAS_LIBRARY)
+				message(STATUS "ATLAS found.")
+				list(APPEND LINK_LIBRARIES ${CLAPACK_LIBRARY} ${CBLAS_LIBRARY})
+			else(CBLAS_LIBRARY)
+				message(STATUS "ATLAS found. (monolithic)")
+			endif(CBLAS_LIBRARY)
+			list(APPEND LINK_LIBRARIES ${ATLAS_LIBRARY})
 			set( SHARK_USE_CBLAS 1)
 			set( SHARK_USE_ATLAS_LAPACK 1)
 			if( ATLAS_FULL_LAPACK )
