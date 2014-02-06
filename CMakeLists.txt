@@ -125,6 +125,7 @@ if(CMakeBuildType MATCHES "debug")
 endif()
 
 list(APPEND COMPILE_DEFINITIONS_RELEASE NDEBUG)
+list(APPEND COMPILE_DEFINITIONS_RELWITHDEBINFO NDEBUG)
 message(STATUS "Will build: " ${CMAKE_BUILD_TYPE})
 
 #####################################################################
