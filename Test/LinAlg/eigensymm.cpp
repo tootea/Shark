@@ -42,6 +42,8 @@ BOOST_AUTO_TEST_CASE( LinAlg_eigensymm )
 
 	// lines below are for self-testing this example, please ignore
 	BOOST_CHECK_SMALL(lambda(0)- 8.74697,1.e-5);
+
+        BOOST_CHECK_SMALL((x(0,0) / x(2,0)) - 5.007,1.e-3);
 }
 
 
