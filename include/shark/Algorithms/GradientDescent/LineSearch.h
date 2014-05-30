@@ -39,6 +39,7 @@
 #include <shark/Core/ISerializable.h>
 #include "Impl/wolfecubic.inl"
 #include "Impl/dlinmin.inl"
+#include "Impl/linmin.inl"
 #include <shark/ObjectiveFunctions/AbstractObjectiveFunction.h>
 
 namespace shark {
@@ -51,7 +52,8 @@ class LineSearch:public ISerializable {
 public:
 	enum LineSearchType {
 	    Dlinmin,
-	    WolfeCubic
+	    WolfeCubic,
+	    Linmin
 	};
 	typedef AbstractObjectiveFunction<RealVector,double> ObjectiveFunction;
 
@@ -105,6 +107,10 @@ public:
 			break;
 		case WolfeCubic:
 			detail::wolfecubic(searchPoint, newtonDirection, pointValue, *m_function, derivative, stepLength);
+			break;
+		case Linmin:
+			detail::linmin(searchPoint, newtonDirection, pointValue, *m_function, m_minInterval, m_maxInterval);
+			m_function->evalDerivative(searchPoint, derivative);
 			break;
 		}
 	}

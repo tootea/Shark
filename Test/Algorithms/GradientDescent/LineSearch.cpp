@@ -40,4 +40,21 @@ BOOST_AUTO_TEST_CASE( LineSearch_DLinmin )
 	BOOST_CHECK_SMALL(fret-2,1.e-14);
 }
 
+BOOST_AUTO_TEST_CASE( LineSearch_Linmin )
+{
+	double fret(0.);// function value at the point that
+					// is found by the function
+	RealVector p(1);     // initial search starting point
+	RealVector xi(1);    // direction of search
+	// Initialize search starting point and direction:
+	p(0) = -3.;
+	xi(0) = 3.;
+	Testfunction function;
+	// Minimize function:
+	detail::linmin(p, xi, fret, function,0.0,1.0);
+
+	// lines below are for self-testing this example, please ignore
+	BOOST_CHECK_SMALL(fret-2,1.e-14);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
