@@ -90,6 +90,10 @@ public:
 		return m_linesearch;
 	}
 
+	const RealVector &derivative() const {
+		return m_derivative;
+	}
+
 
 protected: // Instance vars
 
