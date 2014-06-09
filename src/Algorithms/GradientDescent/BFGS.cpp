@@ -54,11 +54,7 @@ void BFGS::computeSearchDirection(){
 	axpy_prod(m_hessian,gamma,Hg);
 	
 	//update hessian
-	if (d < 1e-20)
-	{
-		initModel();
-	}
-	else
+	if (d > 1e-20)
 	{
 		double scale=inner_prod(gamma,Hg);
 		scale = (scale / d + 1) / d;
