@@ -76,6 +76,62 @@ public:
 		return lambda / 2.; // eq. (44)
 	}
 
+	void read( InArchive & archive ) {
+		archive >> m_numberOfVariables;
+		archive >> m_mu;
+		archive >> m_lambda;
+
+		archive >> m_initialSigma;
+		archive >> m_sigma;
+		archive >> m_cC;
+		archive >> m_c1;
+		archive >> m_cMu;
+		archive >> m_cSigma;
+		archive >> m_dSigma;
+		archive >> m_muEff;
+
+		archive >> m_mean;
+		archive >> m_weights;
+
+		archive >> m_evolutionPathC;
+		archive >> m_evolutionPathSigma;
+
+		archive >> m_vn;
+		archive >> m_normv;
+
+		archive >> m_D;
+
+		archive >> m_counter;
+	}
+
+	void write( OutArchive & archive ) const {
+		archive << m_numberOfVariables;
+		archive << m_mu;
+		archive << m_lambda;
+
+		archive << m_initialSigma;
+		archive << m_sigma;
+		archive << m_cC;
+		archive << m_c1;
+		archive << m_cMu;
+		archive << m_cSigma;
+		archive << m_dSigma;
+		archive << m_muEff;
+
+		archive << m_mean;
+		archive << m_weights;
+
+		archive << m_evolutionPathC;
+		archive << m_evolutionPathSigma;
+
+		archive << m_vn;
+		archive << m_normv;
+
+		archive << m_D;
+
+		archive << m_counter;
+	}
+
 	using AbstractSingleObjectiveOptimizer<RealVector >::init;
 	
 	void init( ObjectiveFunctionType& function, SearchPointType const& p) {
