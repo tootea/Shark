@@ -51,7 +51,7 @@
 namespace shark {
 class VDCMA : public AbstractSingleObjectiveOptimizer<RealVector >
 {
-private:
+protected:
 	double chi( unsigned int n ) {
 		return( std::sqrt( static_cast<double>( n ) )*(1. - 1./(4.*n) + 1./(21.*n*n)) );
 	}
@@ -231,7 +231,7 @@ public:
 		return m_lambda;
 	}
 
-private:
+protected:
 	/// \brief Updates the strategy parameters based on the supplied offspring population.
 	///
 	/// The chromosome stores the y-vector that is the step from the mean in D=1, sigma=1 space.
