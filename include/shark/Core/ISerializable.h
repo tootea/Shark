@@ -41,13 +41,13 @@
 #endif
 	
 #ifdef USE_SERIALIZATION_WORKAROUND
-	#include <boost/archive/text_iarchive.hpp>
-	#include <boost/archive/text_oarchive.hpp>
+	#include <boost/archive/binary_iarchive.hpp>
+	#include <boost/archive/binary_oarchive.hpp>
 #else
 	#include <boost/archive/polymorphic_iarchive.hpp>
 	#include <boost/archive/polymorphic_oarchive.hpp>
-	#include <boost/archive/polymorphic_text_iarchive.hpp>
-	#include <boost/archive/polymorphic_text_oarchive.hpp>
+	#include <boost/archive/polymorphic_binary_iarchive.hpp>
+	#include <boost/archive/polymorphic_binary_oarchive.hpp>
 #endif
 namespace shark {
 	
@@ -58,27 +58,27 @@ namespace shark {
 	/**
 	* \brief Type of an archive to read from.
 	*/
-	typedef boost::archive::text_iarchive InArchive;
-	typedef boost::archive::text_iarchive TextInArchive;
+	typedef boost::archive::binary_iarchive InArchive;
+	typedef boost::archive::binary_iarchive TextInArchive;
 	
 
 	/**
 	* \brief Type of an archive to write to.
 	*/
-	typedef boost::archive::text_oarchive OutArchive;
-	typedef boost::archive::text_oarchive TextOutArchive;
+	typedef boost::archive::binary_oarchive OutArchive;
+	typedef boost::archive::binary_oarchive TextOutArchive;
 #else	
 	/**
 	* \brief Type of an archive to read from.
 	*/
 	typedef boost::archive::polymorphic_iarchive InArchive;
-	typedef boost::archive::polymorphic_text_iarchive TextInArchive;
+	typedef boost::archive::polymorphic_binary_iarchive TextInArchive;
 
 	/**
 	* \brief Type of an archive to write to.
 	*/
 	typedef boost::archive::polymorphic_oarchive OutArchive;
-	typedef boost::archive::polymorphic_text_oarchive TextOutArchive;
+	typedef boost::archive::polymorphic_binary_oarchive TextOutArchive;
 #endif
     /**
      * \brief Abstracts serializing functionality.
