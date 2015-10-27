@@ -52,18 +52,33 @@ void BFGS::computeSearchDirection(){
 	
 	RealVector Hg(m_dimension,0.0);
 	axpy_prod(m_hessian,gamma,Hg);
-	
-	//update hessian
-	if (d > 1e-20)
-	{
-		double scale=inner_prod(gamma,Hg);
-		scale = (scale / d + 1) / d;
-		
-		m_hessian += scale * outer_prod(delta,delta) 
-			  - (outer_prod(Hg,delta)+outer_prod(delta,Hg))/d;
+	double gHg = inner_prod(gamma,Hg);
 
+	//compute damped step
+	//Method doi:10.1016/j.jcp.2013.08.044
+	//Sigma parameters doi:10.1007/s10957-013-0448-8
+	double sigma_2 = 0.6, sigma_3 = 3.0;
+	double tau = d / gHg;
+
+	double theta = 1.0;
+	if (tau > 1 + sigma_3)
+	{
+		theta = sigma_3 / (tau - 1);
 	}
-	
+	else if (tau < 1 - sigma_2)
+	{
+		theta = sigma_2 / (1 - tau);
+	}
+
+	delta = theta * delta + (1 - theta) * Hg;
+	d = inner_prod(gamma,delta);
+
+	//update hessian
+	double scale = (gHg / d + 1) / d;
+
+	m_hessian += scale * outer_prod(delta,delta)
+		  - (outer_prod(Hg,delta)+outer_prod(delta,Hg))/d;
+
 	//compute search direction
 	axpy_prod(m_hessian,m_derivative,m_searchDirection);
 	m_searchDirection *= -1;
