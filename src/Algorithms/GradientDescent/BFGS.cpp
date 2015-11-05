@@ -45,6 +45,14 @@ void BFGS::initModel(){
 		m_hessian(i, i) = 1.;
 	}
 }
+
+void BFGS::setHessian(const RealMatrix &hessian){
+	m_hessian = hessian;
+	axpy_prod(m_hessian,m_derivative,m_searchDirection);
+	m_searchDirection *= -1;
+	m_initialStepLength = 1.0;
+}
+
 void BFGS::computeSearchDirection(){
 	RealVector gamma = m_derivative - m_lastDerivative;
 	RealVector delta = m_best.point - m_lastPoint;

@@ -57,6 +57,8 @@ public:
 	RealMatrix &hessian()
 	{ return m_hessian; }
 
+	SHARK_EXPORT_SYMBOL void setHessian(const RealMatrix &hessian);
+
 	//from ISerializable
 	SHARK_EXPORT_SYMBOL void read( InArchive & archive );
 	SHARK_EXPORT_SYMBOL void write( OutArchive & archive ) const;
