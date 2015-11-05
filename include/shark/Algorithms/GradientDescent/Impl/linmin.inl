@@ -80,7 +80,7 @@ void linmin
 	const double   GLIMIT = 100.;
 	const double   TINY   = 1.0e-20;
 	const unsigned ITMAX  = 100;
-	const double   ZEPS   = 1.0e-10;
+	const double   ZEPS   = 1.0e-20;
 	const double   TOL    = 2.0e-4;
         const double   CGOLD  = 0.3819660;
 
